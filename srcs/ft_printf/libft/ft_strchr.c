@@ -1,20 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.h                                           :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jiskim <jiskim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/18 20:51:23 by jiskim            #+#    #+#             */
-/*   Updated: 2022/02/24 20:51:22 by jiskim           ###   ########.fr       */
+/*   Created: 2021/05/10 17:04:34 by jiskim            #+#    #+#             */
+/*   Updated: 2021/09/24 16:44:45 by jiskim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SERVER_H
-# define SERVER_H
-
-# include <unistd.h>
-# include <signal.h>
-# include "ft_printf.h"
-
-#endif
+char	*ft_strchr(const char *s, int c)
+{
+	while (*s)
+	{
+		if (*s == (char)c)
+			return ((char *)s);
+		s++;
+	}
+	return (0);
+}

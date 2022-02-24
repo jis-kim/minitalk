@@ -1,20 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.h                                           :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jiskim <jiskim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/18 20:51:23 by jiskim            #+#    #+#             */
-/*   Updated: 2022/02/24 20:51:22 by jiskim           ###   ########.fr       */
+/*   Created: 2021/05/04 19:50:34 by jiskim            #+#    #+#             */
+/*   Updated: 2021/09/24 19:11:19 by jiskim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SERVER_H
-# define SERVER_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <signal.h>
-# include "ft_printf.h"
+size_t	ft_strlen(const char *str)
+{
+	size_t	i;
 
-#endif
+	i = 0;
+	if (str == NULL)
+		return (0);
+	while (*str != '\0')
+	{
+		i++;
+		str++;
+	}
+	return (i);
+}

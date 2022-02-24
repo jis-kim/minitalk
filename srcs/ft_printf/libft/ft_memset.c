@@ -1,20 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.h                                           :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jiskim <jiskim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/18 20:51:23 by jiskim            #+#    #+#             */
-/*   Updated: 2022/02/24 20:51:22 by jiskim           ###   ########.fr       */
+/*   Created: 2021/05/03 16:31:22 by jiskim            #+#    #+#             */
+/*   Updated: 2021/05/08 15:55:10 by jiskim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SERVER_H
-# define SERVER_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <signal.h>
-# include "ft_printf.h"
+void	*ft_memset(void *b, int c, size_t len)
+{
+	unsigned char	*dst;
 
-#endif
+	dst = (unsigned char *)b;
+	while (len--)
+		*dst++ = (unsigned char)c;
+	return (b);
+}

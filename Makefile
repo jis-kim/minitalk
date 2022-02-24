@@ -6,7 +6,7 @@
 #    By: jiskim <jiskim@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/18 20:52:51 by jiskim            #+#    #+#              #
-#    Updated: 2022/02/18 21:45:52 by jiskim           ###   ########.fr        #
+#    Updated: 2022/02/24 16:23:57 by jiskim           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,9 +16,8 @@ CFLAGS	=	-Wall -Wextra -Werror
 BONDIR	=	./bonus/
 SRCSDIR	=	./srcs/
 INCDIR	=	./includes/
+PFDIR	=	$(SRCSDIR)ft_printf/
 
-SRCS	=	$(SRC_C) $(SRC_S)
-OBJS	=	$(SRCS:.c=.o)
 
 SRCS_C	=	$(addprefix $(SRCSDIR), client.c)
 SRCS_S	=	$(addprefix $(SRCSDIR), server.c)
@@ -26,13 +25,17 @@ SRCS_S	=	$(addprefix $(SRCSDIR), server.c)
 OBJS_C	=	$(SRCS_C:.c=.o)
 OBJS_S	=	$(SRCS_S:.c=.o)
 
-SRCS_B	=	$(addprefix $(CKDIR), checker.c) $(addprefix $(PSDIR), cmd_ops.c \
-			parse.c print.c push_swap_ops.c rotate_ops.c)
-OBJS_B	=	$(SRCS_B:.c=.o)
+SRCS	=	$(SRCS_C) $(SRCS_S)
+OBJS	=	$(SRCS:.c=.o)
+
+# SRCS_B	=	$(addprefix $(CKDIR), checker.c) $(addprefix $(PSDIR), cmd_ops.c \
+# 			parse.c print.c push_swap_ops.c rotate_ops.c)
+# OBJS_B	=	$(SRCS_B:.c=.o)
 
 NAME	=	minitalk
 CLIENT	=	client
 SERVER	=	server
+PFLIB	=	$(PFDIR)libftprintf.a
 
 D_TEST	=	a.out
 DFLAG	=	-g3
@@ -42,21 +45,24 @@ COMPILE_MSG = @echo $(BOLD)$(L_PUPLE) 🔥 $(SERVER) and 🌾 $(CLIENT) Compiled
 all	: $(NAME)
 
 %.o	: %.c
-	$(CC) $(CFLAGS) -I$(INCDIR) -c $< -o $@
+	$(CC) $(CFLAGS) -I$(INCDIR) -I$(PFDIR) -c $< -o $@
 
 $(NAME) : $(CLIENT) $(SERVER)
 
-$(CLIENT) : $(OBJS_C)
-	@$(CC) $(CFLAGS) $(OBJS_C) -o $@
+$(CLIENT) : $(OBJS_C) $(PFLIB)
+	@$(CC) $(CFLAGS) $(PFLIB) $(OBJS_C) -o $@
 
-$(SERVER) : $(OBJS_S)
-	@$(CC) $(CFLAGS) $(OBJS_S) -o $@
+$(SERVER) : $(OBJS_S) $(PFLIB)
+	@$(CC) $(CFLAGS) $(PFLIB) $(OBJS_S) -o $@
 	$(COMPILE_MSG)
+
+$(PFLIB) :
+	@make -C $(PFDIR)
 
 bonus : $(BONUS)
 
 $(BONUS) :  $(OBJS_B)
-	$(CC) $(CFLAGS) $(OBJS_B) -o $@
+	$(CC) $(CFLAGS) $(PFLIB) $(OBJS_B) -o $@
 
 debug : $(D_TEST)
 
@@ -67,13 +73,14 @@ $(D_TEST) : fclean
 	$(CC) $(CFLAGS) $(DFLAG) $(SRCS)
 
 clean :
-	rm -f $(OBJS) $(OBJS_B)
+	@rm -f $(OBJS) $(OBJS_B)
+	@make -C $(PFDIR) fclean
 
 dclean :
-	rm -rf $(D_TEST) a.out.dSYM
+	@rm -rf $(D_TEST) a.out.dSYM
 
 fclean : clean dclean
-	rm -f $(SERVER) $(CLIENT) $(BONUS)
+	@rm -f $(SERVER) $(CLIENT) $(BONUS)
 
 re : fclean all
 

@@ -1,0 +1,9 @@
+{
+	"files.associations": {
+		"client.h": "c",
+		"unistd.h": "c",
+		"signal.h": "c",
+		"_types.h": "c",
+		"bitset": "c"
+	}
+}

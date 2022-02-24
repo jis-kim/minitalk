@@ -1,20 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.h                                           :+:      :+:    :+:   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jiskim <jiskim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/18 20:51:23 by jiskim            #+#    #+#             */
-/*   Updated: 2022/02/24 20:51:22 by jiskim           ###   ########.fr       */
+/*   Created: 2021/05/03 18:58:27 by jiskim            #+#    #+#             */
+/*   Updated: 2021/05/08 14:44:46 by jiskim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SERVER_H
-# define SERVER_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <signal.h>
-# include "ft_printf.h"
-
-#endif
+void	ft_bzero(void *s, size_t n)
+{
+	ft_memset(s, 0, n);
+}

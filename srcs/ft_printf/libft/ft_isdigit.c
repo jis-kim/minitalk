@@ -1,20 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.h                                           :+:      :+:    :+:   */
+/*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jiskim <jiskim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/18 20:51:23 by jiskim            #+#    #+#             */
-/*   Updated: 2022/02/24 20:51:22 by jiskim           ###   ########.fr       */
+/*   Created: 2021/05/08 15:37:14 by jiskim            #+#    #+#             */
+/*   Updated: 2021/05/08 16:18:57 by jiskim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SERVER_H
-# define SERVER_H
-
-# include <unistd.h>
-# include <signal.h>
-# include "ft_printf.h"
-
-#endif
+int	ft_isdigit(int c)
+{
+	if (c >= '0' && c <= '9')
+		return (1);
+	return (0);
+}

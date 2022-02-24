@@ -1,20 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.h                                           :+:      :+:    :+:   */
+/*   ft_putstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jiskim <jiskim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/18 20:51:23 by jiskim            #+#    #+#             */
-/*   Updated: 2022/02/24 20:51:22 by jiskim           ###   ########.fr       */
+/*   Created: 2021/05/16 17:14:43 by jiskim            #+#    #+#             */
+/*   Updated: 2021/09/24 19:51:46 by jiskim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SERVER_H
-# define SERVER_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <signal.h>
-# include "ft_printf.h"
+int	ft_putstr(char *s, int len)
+{
+	int	i;
 
-#endif
+	i = 0;
+	if (!s)
+		return (0);
+	while (i < len)
+	{
+		write(1, &s[i], 1);
+		i++;
+	}
+	return (len);
+}
