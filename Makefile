@@ -6,12 +6,19 @@
 #    By: jiskim <jiskim@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/18 20:52:51 by jiskim            #+#    #+#              #
-#    Updated: 2022/02/24 16:23:57 by jiskim           ###   ########.fr        #
+#    Updated: 2022/02/25 19:37:40 by jiskim           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+
+ifdef DEBUG
+	CFLAGS = -g3 -fsanitize=address
+else
+	CFLAGS = -Wall -Wextra -Werror
+endif
+
 CC		=	gcc
-CFLAGS	=	-Wall -Wextra -Werror
+#CFLAGS	=	-Wall -Wextra -Werror
 
 BONDIR	=	./bonus/
 SRCSDIR	=	./srcs/
@@ -19,8 +26,8 @@ INCDIR	=	./includes/
 PFDIR	=	$(SRCSDIR)ft_printf/
 
 
-SRCS_C	=	$(addprefix $(SRCSDIR), client.c)
-SRCS_S	=	$(addprefix $(SRCSDIR), server.c)
+SRCS_C	=	$(addprefix $(SRCSDIR), client.c utils.c)
+SRCS_S	=	$(addprefix $(SRCSDIR), server.c utils.c)
 
 OBJS_C	=	$(SRCS_C:.c=.o)
 OBJS_S	=	$(SRCS_S:.c=.o)
@@ -38,7 +45,7 @@ SERVER	=	server
 PFLIB	=	$(PFDIR)libftprintf.a
 
 D_TEST	=	a.out
-DFLAG	=	-g3
+DFLAG	=	-g3 -fsanitize=address
 
 COMPILE_MSG = @echo $(BOLD)$(L_PUPLE) 🔥 $(SERVER) and 🌾 $(CLIENT) Compiled 🍚$(RESET)
 
@@ -64,13 +71,14 @@ bonus : $(BONUS)
 $(BONUS) :  $(OBJS_B)
 	$(CC) $(CFLAGS) $(PFLIB) $(OBJS_B) -o $@
 
-debug : $(D_TEST)
+debug :
+	make DEBUG=1
 
 advd : fclean
 	$(CC) $(DFLAG) -fsanitize=address $(SRCS)
 
-$(D_TEST) : fclean
-	$(CC) $(CFLAGS) $(DFLAG) $(SRCS)
+$(D_TEST) : fclean $(PFLIB) $(OBJS_S)
+	$(CC) $(PFLIB) $(DFLAG) $(addprefix $(SRCSDIR), server.c utils.c server.c)
 
 clean :
 	@rm -f $(OBJS) $(OBJS_B)

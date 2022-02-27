@@ -6,20 +6,27 @@
 /*   By: jiskim <jiskim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 21:33:44 by jiskim            #+#    #+#             */
-/*   Updated: 2022/02/24 21:53:16 by jiskim           ###   ########.fr       */
+/*   Updated: 2022/02/25 20:50:06 by jiskim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client.h"
 
-void	print_error(int type)
+int send_one_char(int pid, char ch)
 {
-	if (type == ERR_ARG)
-		write(STDERR_FILENO, "Argument Error\n", 15);
-	exit(EXIT_FAILURE);
-}
+	int i;
 
-int
+	ft_printf("%d, %c\n", pid, ch);
+	i = 7;
+	while (i >= 0)
+	{
+		if (kill(pid, (ch >> i & 1) + 30))
+			return -1;
+		usleep(100);
+		i--;
+	}
+	return 0;
+}
 
 int	main(int argc, char **argv)
 {
@@ -34,9 +41,7 @@ int	main(int argc, char **argv)
 		print_error(ERR_ARG);
 	i = 0;
 	while (argv[2][i])
-	{
-		send_one_char(argv[2][i]);
-	}
-	kill(server, SIGUSR1);
+		if (send_one_char(server, argv[2][i++]))
+			print_error(ERR_SEND);
 	return (EXIT_SUCCESS);
 }
