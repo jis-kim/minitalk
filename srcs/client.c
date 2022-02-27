@@ -6,7 +6,7 @@
 /*   By: jiskim <jiskim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 21:33:44 by jiskim            #+#    #+#             */
-/*   Updated: 2022/02/25 20:50:06 by jiskim           ###   ########.fr       */
+/*   Updated: 2022/02/28 01:34:23 by jiskim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,12 @@ int send_one_char(int pid, char ch)
 {
 	int i;
 
-	ft_printf("%d, %c\n", pid, ch);
 	i = 7;
 	while (i >= 0)
 	{
 		if (kill(pid, (ch >> i & 1) + 30))
 			return -1;
-		usleep(100);
+		usleep(200);
 		i--;
 	}
 	return 0;
