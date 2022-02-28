@@ -4,6 +4,8 @@
 		"unistd.h": "c",
 		"signal.h": "c",
 		"_types.h": "c",
-		"bitset": "c"
+		"bitset": "c",
+		"ft_printf.h": "c",
+		"libft.h": "c"
 	}
 }

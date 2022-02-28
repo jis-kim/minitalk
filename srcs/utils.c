@@ -6,11 +6,11 @@
 /*   By: jiskim <jiskim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 15:27:40 by jiskim            #+#    #+#             */
-/*   Updated: 2022/02/25 20:39:09 by jiskim           ###   ########.fr       */
+/*   Updated: 2022/02/28 15:40:49 by jiskim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "client.h"
+#include "minitalk.h"
 
 void	print_error(int type)
 {
