@@ -6,7 +6,7 @@
 /*   By: jiskim <jiskim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 21:33:44 by jiskim            #+#    #+#             */
-/*   Updated: 2022/03/01 21:55:11 by jiskim           ###   ########.fr       */
+/*   Updated: 2022/03/02 04:41:10 by jiskim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,39 +20,41 @@ void	sigreceive(int signal, siginfo_t *sit, void *oact)
 		g_index = 7;
 	oact = NULL;
 	sit = NULL;
-	if (signal == SIGUSR1 && g_index != 0)
-		print_error(ERR_HDL);
 	g_index--;
+	if (signal == SIGUSR1 && g_index != -1)
+		print_error(ERR_HDL);
+	ft_printf("signal %d\n", signal);
 	return ;
 }
 
 int send_one_char(int pid, char ch)
 {
 	int	index;
-	int	trash;
 
 	index = 7;
 	while (index >= 0)
 	{
-		if (kill(pid, (ch >> (index) & 1) | 30))
+		if (kill(pid, (ch >> index & 1) | 30))
 			return (ERR_SEND);
-		(index)--;
-		usleep(500);
-		if(g_index != index)
-		{
-			if (g_index < 0)
-				g_index += 8;
-			trash = g_index - index;
-			while (trash-- > 0)
-			{
-				kill(pid, SIGUSR1);
-				usleep(500);
-			}
-			return (ERR_HDL);
-		}
+		ft_printf("%d\n", 7 - index);
+		pause();
+		write(1, "pause 1\n", 8);
+		index--;
+		//if (g_index != index)
+		//{
+		//	write(1,"diff\n",5);
+		//	int	ret = 10;
+		//	while (ret-- > 0)
+		//	{
+		//		kill(pid, SIGUSR1);
+		//		pause();
+		//	}
+		//	print_error(ERR_HDL);
+		//}
 	}
 	return 0;
 }
+
 
 int	main(int argc, char **argv)
 {
@@ -69,26 +71,24 @@ int	main(int argc, char **argv)
 	sigemptyset(&sa.sa_mask);
 	sigaddset(&sa.sa_mask, SIGUSR1);
 	sigaddset(&sa.sa_mask, SIGUSR2);
-	sa.__sigaction_u.__sa_sigaction = sigreceive;
+	sa.sa_flags = SA_SIGINFO;
+	sa.sa_sigaction = sigreceive;
 	if (sigaction(SIGUSR1, &sa, NULL) || sigaction(SIGUSR2, &sa, NULL))
 		print_error(ERR_ARG);
 	i = 0;
 	while (argv[2][i])
 	{
 		ret = send_one_char(server, argv[2][i++]);
-		if (ret == ERR_HDL)
-		{
-			ret = 16;
-			while (ret--)
-			{
-				kill(server, SIGUSR1);
-				usleep(500);
-			}
-		}
 		if (ret > 0)
 			print_error(ret);
 	}
-	send_one_char(server, '\0');
+	ret = 8;
+	while (ret-- > 0)
+	{
+		kill(server, SIGUSR1);
+		pause();
+	}
+	send_one_char(server, '\0'); //success
 	ft_printf("Success!");
 	return (EXIT_SUCCESS);
 }
