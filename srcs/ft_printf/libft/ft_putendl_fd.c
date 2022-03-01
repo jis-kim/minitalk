@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr.c                                        :+:      :+:    :+:   */
+/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jiskim <jiskim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/16 17:14:43 by jiskim            #+#    #+#             */
-/*   Updated: 2022/03/01 15:24:11 by jiskim           ###   ########.fr       */
+/*   Created: 2022/03/01 15:25:54 by jiskim            #+#    #+#             */
+/*   Updated: 2022/03/01 15:26:04 by jiskim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_putstr(char *s, int len)
+void	ft_putendl_fd(char *s, int fd)
 {
 	if (!s)
-		return (0);
-	write(1, s, len);
-	return (len);
+		return ;
+	write(fd, s, ft_strlen(s));
+	write(fd, "\n", 1);
 }

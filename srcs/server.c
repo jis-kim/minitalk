@@ -6,7 +6,7 @@
 /*   By: jiskim <jiskim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 20:50:45 by jiskim            #+#    #+#             */
-/*   Updated: 2022/02/28 21:25:57 by jiskim           ###   ########.fr       */
+/*   Updated: 2022/03/01 21:58:18 by jiskim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,28 @@ void	sigpile(int signal, siginfo_t *sit, void *oact)
 	static char	ch;
 	static int	i;
 
-	ft_printf("signal info is %d\n", sit->si_code);
 	oact = NULL;
-	ch = (ch << 1) + (1 & signal);
-	if (kill(sit->si_pid, signal))
-		print_error(ERR_SEND);
+	if (sit->si_pid == 0)
+	{
+		ft_putendl_fd("\n\nrequest failed. try again!\n", 1);
+		ch = 0;
+		i = 0;
+		return ;
+	}
+	ch = (ch << 1) | (1 & signal);
 	i++;
 	if (i == 8)
 	{
-		ft_printf("%c", ch);
-		ch = 0;
 		i = 0;
+		if (ch == 0)
+		{
+			kill(sit->si_pid, SIGUSR1);
+			return ;
+		}
+		write(1, &ch, 1);
+		ch = 0;
 	}
+	kill(sit->si_pid, SIGUSR2);
 }
 
 int	main(void)

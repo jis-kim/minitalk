@@ -6,14 +6,14 @@
 #    By: jiskim <jiskim@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/17 11:34:13 by jiskim            #+#    #+#              #
-#    Updated: 2022/02/24 16:14:15 by jiskim           ###   ########.fr        #
+#    Updated: 2022/03/01 15:27:05 by jiskim           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC		= gcc
 CFLAGS	= -Wall -Wextra -Werror
 SRCS	=	ft_atoi.c ft_bzero.c ft_isdigit.c ft_memset.c ft_strchr.c \
-			ft_strlen.c ft_putstr.c
+			ft_strlen.c ft_putstr.c ft_putendl_fd.c
 OBJS	= $(SRCS:.c=.o)
 NAME	= libft.a
 
