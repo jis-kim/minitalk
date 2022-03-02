@@ -6,7 +6,7 @@
 #    By: jiskim <jiskim@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/18 20:52:51 by jiskim            #+#    #+#              #
-#    Updated: 2022/02/25 19:37:40 by jiskim           ###   ########.fr        #
+#    Updated: 2022/03/02 21:50:53 by jiskim           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,7 @@ COMPILE_MSG = @echo $(BOLD)$(L_PUPLE) 🔥 $(SERVER) and 🌾 $(CLIENT) Compiled
 all	: $(NAME)
 
 %.o	: %.c
-	$(CC) $(CFLAGS) -I$(INCDIR) -I$(PFDIR) -c $< -o $@
+	@$(CC) $(CFLAGS) -I$(INCDIR) -I$(PFDIR) -c $< -o $@
 
 $(NAME) : $(CLIENT) $(SERVER)
 
@@ -71,7 +71,7 @@ bonus : $(BONUS)
 $(BONUS) :  $(OBJS_B)
 	$(CC) $(CFLAGS) $(PFLIB) $(OBJS_B) -o $@
 
-debug :
+debug : fclean
 	make DEBUG=1
 
 advd : fclean

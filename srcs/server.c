@@ -6,7 +6,7 @@
 /*   By: jiskim <jiskim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 20:50:45 by jiskim            #+#    #+#             */
-/*   Updated: 2022/03/02 04:45:53 by jiskim           ###   ########.fr       */
+/*   Updated: 2022/03/02 22:01:15 by jiskim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,54 +14,50 @@
 
 void	sigpile(int signal, siginfo_t *sit, void *oact)
 {
-	static char	ch;
-	static int	i;
+	static char	ch = 0;
+	static int	i = 0;
 	static int	client = -1;
+	static char	buf[BUF_SIZE];
+	static int	len = 0;
 
 	oact = NULL;
-	if (client == -1)
+	if (sit->si_pid)
 		client = sit->si_pid;
-	if (sit->si_pid != client)
-	{
-		//ft_putendl_fd("\n\nrequest failed. try again!\n", 1);
-		kill(client, SIGUSR1);
-		//ch = 0;
-		//i = 0;
-		//client = -1;
-		return ;
-	}
 	ch = (ch << 1) | (1 & signal);
-	ft_printf("%d\n", i);
 	i++;
-	if (i >= 8)
+	if (i == 8)
 	{
-		if (ch == 0) //success
+		i = 0;
+		buf[len++] = ch;
+		if (len == BUF_SIZE - 1 || ch == 0)
+		{
+			write(1, buf, len);
+			len = 0;
+		}
+		if (ch == 0)
 		{
 			kill(client, SIGUSR1);
-			client = -1;
 			return ;
 		}
-		write(1, &ch, 1);
-		i = 0;
 		ch = 0;
 	}
-	ft_printf("before kill %d\n", i - 1);
-	kill(client, SIGUSR2);
+	if (kill(client, SIGUSR2))
+		print_error(ERR_SEND);
 }
 
 int	main(void)
 {
 	struct sigaction	sa;
 
-	ft_printf("I'm server!! and my pid is %d\n", getpid());
-	sigemptyset(&sa.sa_mask);
-	sigaddset(&sa.sa_mask, SIGUSR1);
-	sigaddset(&sa.sa_mask, SIGUSR2);
+	ft_printf("pid is %d\n", getpid());
+	//sigemptyset(&sa.sa_mask);
+	//sigaddset(&sa.sa_mask, SIGUSR1);
+	//sigaddset(&sa.sa_mask, SIGUSR2);
 	sa.sa_flags = SA_SIGINFO;
-	sa.__sigaction_u.__sa_sigaction = sigpile;
+	sa.sa_sigaction = sigpile;
 	if (sigaction(SIGUSR1, &sa, NULL) || sigaction(SIGUSR2, &sa, NULL))
 		print_error(ERR_ARG);
-	while(1)
+	while (1)
 		pause();
 	return (EXIT_SUCCESS);
 }

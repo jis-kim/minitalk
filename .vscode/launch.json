@@ -9,9 +9,21 @@
       "type": "lldb",
       "request": "launch",
       "program": "${workspaceFolder}/client",
-      "args": ["62543", "hihihi"],
+      "args": ["46816", "hihihi"],
       "stopAtEntry": false,
-      "cwd": "${fileDirname}",
+      "cwd": "${fileDirname}/..",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "lldb"
+    },
+    {
+      "name": "server",
+      "type": "lldb",
+      "request": "launch",
+      "program": "${workspaceFolder}/server",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${fileDirname}/..",
       "environment": [],
       "externalConsole": false,
       "MIMode": "lldb"
