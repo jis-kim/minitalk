@@ -6,7 +6,7 @@
 #    By: jiskim <jiskim@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/18 20:52:51 by jiskim            #+#    #+#              #
-#    Updated: 2022/03/02 21:50:53 by jiskim           ###   ########.fr        #
+#    Updated: 2022/03/03 16:27:41 by jiskim           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,59 +17,70 @@ else
 	CFLAGS = -Wall -Wextra -Werror
 endif
 
+ifdef SRCS_B_RELINK
+	OBJS_F_C = $(OBJS_B_C)
+	OBJS_F_S = $(OBJS_B_S)
+else
+	OBJS_F_C = $(OBJS_C)
+	OBJS_F_S = $(OBJS_S)
+endif
+
 CC		=	gcc
 #CFLAGS	=	-Wall -Wextra -Werror
 
-BONDIR	=	./bonus/
-SRCSDIR	=	./srcs/
-INCDIR	=	./includes/
-PFDIR	=	$(SRCSDIR)ft_printf/
+SRCDIR		=	./srcs/
+INCDIR		=	./includes/
+BONDIR		=	$(SRCDIR)bonus/
+PFDIR		=	$(SRCDIR)ft_printf/
 
 
-SRCS_C	=	$(addprefix $(SRCSDIR), client.c utils.c)
-SRCS_S	=	$(addprefix $(SRCSDIR), server.c utils.c)
+SRCS_C		=	$(addprefix $(SRCDIR), client.c utils.c)
+SRCS_S		=	$(addprefix $(SRCDIR), server.c utils.c)
 
-OBJS_C	=	$(SRCS_C:.c=.o)
-OBJS_S	=	$(SRCS_S:.c=.o)
+OBJS_C		=	$(SRCS_C:.c=.o)
+OBJS_S		=	$(SRCS_S:.c=.o)
 
-SRCS	=	$(SRCS_C) $(SRCS_S)
-OBJS	=	$(SRCS:.c=.o)
+SRCS		=	$(SRCS_C) $(SRCS_S)
+OBJS		=	$(SRCS:.c=.o)
 
-# SRCS_B	=	$(addprefix $(CKDIR), checker.c) $(addprefix $(PSDIR), cmd_ops.c \
-# 			parse.c print.c push_swap_ops.c rotate_ops.c)
-# OBJS_B	=	$(SRCS_B:.c=.o)
+SRCS_B_C	=	$(addprefix $(BONDIR), client_bonus.c utils_bonus.c)
+SRCS_B_S	=	$(addprefix $(BONDIR), server_bonus.c utils_bonus.c)
 
-NAME	=	minitalk
-CLIENT	=	client
-SERVER	=	server
-PFLIB	=	$(PFDIR)libftprintf.a
+OBJS_B_C	=	$(SRCS_B_C:.c=.o)
+OBJS_B_S	=	$(SRCS_B_S:.c=.o)
 
-D_TEST	=	a.out
-DFLAG	=	-g3 -fsanitize=address
+SRCS_B		=	$(SRCS_B_C) $(SRCS_B_S)
+OBJS_B		=	$(SRCS_B:.c=.o)
+
+NAME		=	minitalk
+CLIENT		=	client
+SERVER		=	server
+PFLIB		=	$(PFDIR)libftprintf.a
+
+D_TEST		=	a.out
+DFLAG		=	-g3 -fsanitize=address
 
 COMPILE_MSG = @echo $(BOLD)$(L_PUPLE) 🔥 $(SERVER) and 🌾 $(CLIENT) Compiled 🍚$(RESET)
 
 all	: $(NAME)
 
 %.o	: %.c
-	@$(CC) $(CFLAGS) -I$(INCDIR) -I$(PFDIR) -c $< -o $@
+	$(CC) $(CFLAGS) -I$(INCDIR) -I$(PFDIR) -c $< -o $@
 
 $(NAME) : $(CLIENT) $(SERVER)
 
-$(CLIENT) : $(OBJS_C) $(PFLIB)
-	@$(CC) $(CFLAGS) $(PFLIB) $(OBJS_C) -o $@
+$(CLIENT) : $(OBJS_F_C) $(PFLIB)
+	@$(CC) $(CFLAGS) $(PFLIB) $(OBJS_F_C) -o $@
 
-$(SERVER) : $(OBJS_S) $(PFLIB)
-	@$(CC) $(CFLAGS) $(PFLIB) $(OBJS_S) -o $@
+$(SERVER) : $(OBJS_F_S) $(PFLIB)
+	@$(CC) $(CFLAGS) $(PFLIB) $(OBJS_F_S) -o $@
 	$(COMPILE_MSG)
 
 $(PFLIB) :
 	@make -C $(PFDIR)
 
-bonus : $(BONUS)
-
-$(BONUS) :  $(OBJS_B)
-	$(CC) $(CFLAGS) $(PFLIB) $(OBJS_B) -o $@
+bonus :
+	make SRCS_B_RELINK=1 all
 
 debug : fclean
 	make DEBUG=1
@@ -78,7 +89,7 @@ advd : fclean
 	$(CC) $(DFLAG) -fsanitize=address $(SRCS)
 
 $(D_TEST) : fclean $(PFLIB) $(OBJS_S)
-	$(CC) $(PFLIB) $(DFLAG) $(addprefix $(SRCSDIR), server.c utils.c server.c)
+	$(CC) $(PFLIB) $(DFLAG) $(addprefix $(SRCDIR), server.c utils.c server.c)
 
 clean :
 	@rm -f $(OBJS) $(OBJS_B)
