@@ -6,7 +6,7 @@
 /*   By: jiskim <jiskim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 21:33:44 by jiskim            #+#    #+#             */
-/*   Updated: 2022/03/02 22:01:08 by jiskim           ###   ########.fr       */
+/*   Updated: 2022/03/03 15:34:55 by jiskim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,9 @@ int	main(int argc, char **argv)
 	server = ft_atoi(argv[1]);
 	if (server == 0)
 		print_error(ERR_ARG);
-	//sigemptyset(&sa.sa_mask);
-	//sigaddset(&sa.sa_mask, SIGUSR1);
-	//sigaddset(&sa.sa_mask, SIGUSR2);
+	sigemptyset(&sa.sa_mask);
+	sigaddset(&sa.sa_mask, SIGUSR1);
+	sigaddset(&sa.sa_mask, SIGUSR2);
 	sa.sa_flags = SA_SIGINFO;
 	sa.sa_sigaction = sigreceive;
 	if (sigaction(SIGUSR1, &sa, NULL) || sigaction(SIGUSR2, &sa, NULL))
